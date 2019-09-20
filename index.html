@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The Hollow Men</title>
+  <meta name="description" content="Three JS Landing One Page with Timer Demos">
+  <link rel="stylesheet" href="main.css">
+<script>
+ 
+//quick hack to bypass google autoplay policy
+
+function play(){
+  
+    var audio = document.getElementById("player");
+    audio.play();
+    document.getElementById("play").className = "playclicked";
+
+}
+
+</script>
+</head>
+<body>
+
+<div class="content">
+  </div>
+    <video autoplay muted loop id="myVideo">
+        <source src="walk.mp4" type="video/mp4">
+      </video>
+
+    <audio id="player" loop><source src="elegy.mp3" type="audio/mp3"></audio>   
+         <div class = "parts">
+          <button id ="play" onclick="play()"><img src="https://img.icons8.com/ios/50/000000/room-sound.png"></button>
+
+      <h1>The Hollow Men</h1>
+      <h4>By T.S Eliot</h4>
+      <p>A multimedia re-imagining of Eliot's classic <br/>modernist poem by <a href = "http://www.thetunnel.london">The Tunnel Artists</a></p>
+      <p></p>
+      <p>The exhibition 'Heart of Darkness' opens at <br/>Hundred Years Gallery in Hoxton on the 31st Nov 2019</p>
+      <hr>
+      <h1><a href = "1.html">I</h1>
+      <h1><a href = "2.html">II</a></h1>
+      <h1><a href = "3.html">III</a></h1>
+      <h1><a href = "2.html">IV</a></h1>
+      <h1><a href = "2.html">V</a></h1>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>3</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				font-family: 'Montserrat', sans-serif;
+				background-color: #f0f0f0;
+				margin: 0px;
+				overflow: hidden;
+			}
+
+			label, input {
+				cursor: pointer;
+			}
+
+		</style>
+		  <link rel="stylesheet" type="text/css" href="main.css">
+	</head>
+	<body id ="overlay">
+
+		<script src="build/three.js"></script>
+		<!--glitch lib loaders-->
+		<script src="js/CopyShader.js"></script>
+		<script src="js/DigitalGlitch.js"></script>
+
+		<script src="js/EffectComposer.js"></script>
+		<script src="js/RenderPass.js"></script>
+		<script src="js/MaskPass.js"></script>
+		<script src="js/ShaderPass.js"></script>
+        <script src="js/GlitchPass.js"></script>
+        <script src ="js/UnrealBloomPass.js"></script>
+
+		<script>
+
+			var container;
+			var camera, scene, raycaster, renderer;
+
+			var mouse = new THREE.Vector2(), INTERSECTED;
+			var radius = 100, theta = 0;
+			
+			var glitchPass;
+
+			init();
+			startTime();
+			animate();
+			
+			function updateOptions() {
+				var wildGlitch = document.getElementById('wildGlitch');
+			}
+
+
+			function startTime(){
+
+				var x = setInterval(function() {
+				var countDownDate = new Date("nov 31, 2019 00:00:00").getTime();
+				// Get todays date and time
+				var now = new Date().getTime();
+
+				// Find the distance between now and the count down date
+				var distance = countDownDate - now;
+
+				// Time calculations for days, hours, minutes and seconds
+				var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+				var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+				var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+				var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                // var milliseconds = Math.floor((distance % (1000 * 60)) * 1000 /1000);
+				
+				// Display the result in the element with id="dem"o"
+				document.getElementById("timer").innerHTML ="<div class ='timerSec'>"+days + " Days " +'</div>'+'<div class ="timerSec">' +hours + " Hours "+
+				 '</div>'+'<div class ="timerSec">'+ minutes + " Minutes" +"</div><div class ='timerSec'>"+ seconds + " Seconds"+'</div></div>';
+
+				// If the count down is finished, write some text 
+				if (distance < 0) {
+					clearInterval(x);
+					document.getElementById("timer").innerHTML = "<h1>COUNTDOWN EXPIRED</h1>";
+				}
+				}, 1000);
+		}
+
+			function init() {
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+
+				var info = document.createElement( 'div' );
+				var timer = document.createElement( 'div' );
+				var timerSec = document.createElement( 'div' );
+				var overlay = document.createElement( 'div' );
+				var byem = document.createElement ('div');
+				var poem = document.createElement('div')
+                				
+				timer.style.color = 'white';
+				timer.style.width = '100%';
+				timer.style.margin = '0 auto';
+				timer.innerHTML = '<div id = "timer"></div>'
+
+				timerSec.style.width = "10%";
+				timerSec.style.fontSize = "1.2em";
+		
+                byem.style.position = 'absolute';
+				byem.style.color = 'white';
+				byem.style.top = '0%';
+                byem.style.fontSize = "1em";
+				byem.style.padding = '20px';
+
+				byem.style.backgroundColor = 'black';
+				byem.style.margin = '0 auto';
+
+				poem.style.position = 'absolute';
+				poem.style.color = 'white';
+				poem.style.top = "5%";
+				poem.style.left="70%";
+				// poem.style.width = '40%';
+				poem.style.backgroundColor = 'black';
+				poem.style.padding = '20px';
+				poem.style.border = "solid white 2px";
+
+				poem.innerHTML ="<h3>III</h3><p>This is the dead land<br/> This is cactus land</br>Here the stone images</br>Are raised, here they receive</br>The supplication of a dead man's hand</br>Under the twinkle of a fading star.</br>Is it like this</br>In death's other kingdom</br>Waking alone</br>At the hour when we are</br>Trembling with tenderness</br>Lips that would kiss</br>Form prayers to broken stone."
+                byem.innerHTML = '<a href ="index.html"><img src = "logo.png" width = "100" /></a> </div>'
+				// container.appendChild( info );
+		
+				timer.appendChild( timerSec );
+				container.appendChild(byem);
+				poem.appendChild( timer );
+                container.appendChild(poem);
+                
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
+
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0x000000 );
+			
+				var light = new THREE.DirectionalLight( 0xffff00, 1 );
+				light.position.set( 1, 1, 1 ).normalize();
+				scene.add( light );
+
+            //generates plane meshes
+            var geometry = new THREE.PlaneBufferGeometry( 40, 40, 40 );
+            var material = new THREE.MeshLambertMaterial( {color: 'red', side: THREE.DoubleSide} );
+            for ( var i = 0; i < 180; i ++ ){
+            var plane = new THREE.Mesh( geometry, material );
+            plane.position.x = Math.random() * 900 - 400;
+		    plane.position.y = Math.random() * 800 - 400;
+		    plane.position.z = Math.random() * 800 - 400;
+
+            plane.rotation.x = Math.random() * 2 * Math.PI;
+		    plane.rotation.y = Math.random() * 5 * Math.PI;
+		    plane.rotation.z = Math.random() * 2 * Math.PI;
+            scene.add( plane );
+            }
+            //sun mesh
+            var geometry2 = new THREE.SphereBufferGeometry(150,150,150);
+            var material2 = new THREE.MeshLambertMaterial( {color: '#ffff00'} );
+            var sun = new THREE.Mesh( geometry2, material2 );
+
+            sun.position.x = Math.random() * 200 - 400;
+		    sun.position.y = Math.random() * 200 - 400;
+		    sun.position.z = Math.random() * 200 - 400;
+
+                    scene.add( sun );
+            	// SUPER SIMPLE GLOW EFFECT
+	// use sprite because it appears the same from all angles
+	// var spriteMaterial = new THREE.SpriteMaterial( 
+	// { 
+	// 	map: new THREE.ImageUtils.loadTexture( 'images/glow.png' ), 
+	// 	useScreenCoordinates: false, alignment: THREE.SpriteAlignment.center,
+	// 	color: 0x0000ff, transparent: false, blending: THREE.AdditiveBlending
+	// });
+
+	// var sprite = new THREE.Sprite( spriteMaterial );
+	// sprite.scale.set(200, 200, 1.0);
+	// sun.add(sprite); // this centers the glow at the mesh
+	
+
+
+            raycaster = new THREE.Raycaster();
+
+            renderer = new THREE.WebGLRenderer();
+            ({
+                alpha: true
+            });
+
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild(renderer.domElement);
+
+				
+				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+				window.addEventListener( 'resize', onWindowResize, false );
+				
+				// postprocessing
+
+				composer = new THREE.EffectComposer( renderer );
+				composer.addPass( new THREE.RenderPass( scene, camera ) );
+
+				glitchPass = new THREE.GlitchPass();
+				glitchPass.renderToScreen = true;
+				composer.addPass( glitchPass );
+				updateOptions();
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function onDocumentMouseMove( event ) {
+
+				event.preventDefault();
+
+				mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+				mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+			}
+	
+			
+			function animate() {
+				requestAnimationFrame( animate );
+				render();
+				composer.render();
+			}
+
+			function render() {
+
+				theta += 0.9;
+				camera.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
+				camera.position.y = radius * Math.sin( THREE.Math.degToRad( theta ) );
+				camera.position.z = radius * Math.cos( THREE.Math.degToRad( theta ) );
+				camera.lookAt( scene.position );
+
+				camera.updateMatrixWorld();
+
+				// find intersections
+
+				raycaster.setFromCamera( mouse, camera );
+
+				var intersects = raycaster.intersectObjects( scene.children );
+
+				if ( intersects.length > 0 ) {
+
+					if ( INTERSECTED != intersects[ 0 ].object ) {
+
+						if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+
+						INTERSECTED = intersects[ 0 ].object;
+						INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+						INTERSECTED.material.emissive.setHex( '0xffffff' );
+
+					}
+
+				} else {
+
+					if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+
+					INTERSECTED = null;
+
+				}
+
+				renderer.render( scene, camera );
+
+			}
+
+        </script>
+       
+<div class="content3"></div>
+	</body>
+</html>
