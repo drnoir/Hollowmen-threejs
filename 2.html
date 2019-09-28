@@ -75,8 +75,9 @@
 				var byem = document.createElement ('div');
 				var poem = document.createElement('div')
 
-						// timer.style.position = 'absolute';
-						timer.style.color = 'white';
+			
+				// timer.style.position = 'absolute';
+				timer.style.color = 'white';
 				// timer.style.top = '90%';
 				timer.style.width = '100%';
 				timer.style.margin = '0 auto';
@@ -109,7 +110,7 @@
 				poem.style.border = "solid white 2px";
 
 				poem.innerHTML ="<h3>II</h3><p>Eyes I dare not meet in dreams</br>In death's dream kingdom</br>These do not appear:</br>There, the eyes </br>Sunlight on a broken column</br>There, is a tree swinging</br>And voices are</br>In the wind's singing</br>More distant and more solemn</br>Than a fading star.</br></p><p>Let me be no nearer</br>In death's dream kingdom</br>Let me also wear</br>Such deliberate disguises</br>Rat's coat, crowskin, crossed staves</br>In a field</br>Behaving as the wind behaves</br>No nearer-</br>Not that final meeting In the twilight kingdom</p>"
-   
+     
 				byem.innerHTML = '<a href ="index.html"><img src = "logo.png" width = "100" /></a> </div>'
 				// container.appendChild( info );
 		
@@ -129,7 +130,7 @@
 				// particles
 				var PI2 = Math.PI * 2;
 				var material = new THREE.SpriteCanvasMaterial( {
-					color: 0xffffff,
+					color: 0x39ff14,
 					program: function ( context ) {
 						context.beginPath();
 						context.arc( 0, 0, 0.5, 0, PI2, true );
@@ -150,7 +151,7 @@
 				}
 				// lines
 				var geometry = new THREE.BufferGeometry().setFromPoints( points );
-				var line = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: 0xffffff, opacity: 0.5 } ) );
+				var line = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: 0x39ff14, opacity: 0.5 } ) );
 				scene.add( line );
 				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 				document.addEventListener( 'touchstart', onDocumentTouchStart, false );
